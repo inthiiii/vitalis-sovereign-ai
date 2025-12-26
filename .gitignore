@@ -1,0 +1,18 @@
+# Python / Backend
+backend/venv/
+backend/__pycache__/
+backend/*.pyc
+backend/.env
+backend/vitalis.db
+backend/reports/
+backend/temp_uploads/
+
+# Node / Frontend
+frontend/node_modules/
+frontend/.next/
+frontend/out/
+frontend/.DS_Store
+
+# System
+.DS_Store
+*.log
