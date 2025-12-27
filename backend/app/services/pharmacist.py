@@ -8,25 +8,20 @@ class PharmacistAgent:
         print("💊 Pharmacist Agent is reviewing the plan...")
         
         prompt = f"""
-        You are an AI Pharmacist and Safety Auditor.
+        You are an AI Pharmacist.
         
         INPUTS:
-        1. Patient Medical History: "{patient_history}"
-        2. Proposed Treatment Plan (from SOAP Note): "{soap_note}"
+        1. History: "{patient_history}"
+        2. Plan: "{soap_note}"
 
-        TASK:
-        Compare the medications in the PLAN against the Patient History.
-
-        CRITICAL OUTPUT RULES:
-        - If the patient is allergic to a prescribed drug (e.g. Penicillin vs Amoxicillin), you MUST start your response with "WARNING:".
-        - If there is a dangerous interaction, you MUST start with "WARNING:".
-        - If the plan is safe, start with "SAFE:".
+        CRITICAL RULES:
+        1. ONLY analyze drugs explicitly mentioned in the "Plan". DO NOT assume or hallucinate drugs that are not written there.
+        2. If the Plan is empty or generic (e.g., "Rest", "Follow up"), return "SAFE: No medications prescribed."
+        3. If a drug IS mentioned, check it against the History for allergies/interactions.
         
-        Examples:
-        - "WARNING: Patient is allergic to Penicillin and Amoxicillin was prescribed."
-        - "SAFE: No contraindications detected."
-        
-        Do not be vague. Start with either WARNING or SAFE.
+        OUTPUT FORMAT:
+        - Start with "WARNING:" only if a clear danger exists.
+        - Start with "SAFE:" otherwise.
         """
 
         response = ollama.chat(model=self.model, messages=[

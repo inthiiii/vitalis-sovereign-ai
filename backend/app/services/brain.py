@@ -8,20 +8,21 @@ class BrainService:
         print(f"Thinking with {self.model}...")
         
         prompt = f"""
-        You are an expert medical scribe assisting a doctor. 
-        Your task is to convert the following raw consultation transcript into a professional medical SOAP Note.
-
-        RAW TRANSCRIPT:
+        You are an expert medical scribe.
+        
+        INPUT DATA:
         "{transcript}"
 
         INSTRUCTIONS:
-        1. Extract relevant medical information only.
-        2. Format strictly as follows:
-           - **SUBJECTIVE:** (Patient's chief complaint, history of present illness, symptoms)
-           - **OBJECTIVE:** (Vital signs, physical exam findings, lab results mentioned)
-           - **ASSESSMENT:** (Diagnosis or differential diagnoses)
-           - **PLAN:** (Medications, treatment instructions, follow-up)
-        3. Be concise and professional. Do not add conversational filler.
+        1. Analyze Audio and Visual findings.
+        2. Visual findings must go into **OBJECTIVE**.
+        3. Do not order tests that are already visible (e.g. don't order X-Ray if one is provided).
+        
+        FORMATTING RULES:
+        - Use the standard SOAP format (Subjective, Objective, Assessment, Plan).
+        - **DO NOT include conversational filler.**
+        - **DO NOT add a "Note:" or explanation at the end.**
+        - **Output ONLY the SOAP note content.**
         """
 
         response = ollama.chat(model=self.model, messages=[
